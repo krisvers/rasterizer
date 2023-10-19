@@ -43,7 +43,13 @@ static LRESULT CALLBACK win_wndproc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 		{
 			PAINTSTRUCT ps;
 			HDC hdc = WIN_CALL(BeginPaint(hwnd, &ps));
-			WIN_CALL(FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1)));
+			hwnd_context_t * ctx = GetWindowLongPtrA(hwnd, -21);
+			BITMAPINFO bi = {
+				.bmiHeader.biSize = sizeof(BITMAPINFOHEADER),
+				.bmiHeader.biWidth = ctx->width,
+				.bmiHeader.biWidth = ctx->height,
+			};
+			SetDIBitsToDevice(hdc, 0, 0, ctx->width, ctx->height, 0, 0, 0, 0, ctx->bitmap, )
 			WIN_CALL(EndPaint(hwnd, &ps));
 		}
 		return 0;
